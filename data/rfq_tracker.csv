@@ -1,0 +1,4 @@
+Row,Project,Component,Supplier,Status,Dependencies,Risk_Level
+45,Project Atlas,Turbine Housing,Supplier Y,On Track,None,Low
+46,Project Atlas,Bearings,Supplier X,Delayed,Customs Clearance,High
+47,Project Atlas,Electrical Systems,Internal,Pending,Electrical Approval Dependency,High

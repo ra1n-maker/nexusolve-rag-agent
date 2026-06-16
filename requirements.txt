@@ -1,0 +1,11 @@
+langchain
+langchain-groq
+langgraph
+qdrant-client
+fastapi
+uvicorn
+pydantic
+pandas
+fastembed
+langchain-community
+langchain-qdrant

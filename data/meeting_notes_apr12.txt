@@ -1,0 +1,6 @@
+Project Atlas - Weekly Sync
+Date: 12 Apr
+Attendees: Procurement Team, Engineering Lead
+
+Notes:
+We reviewed the current timeline for Project Atlas. The main turbine housing is on track, but we have a critical blocker. The bearing shipment from Supplier X has been delayed by three weeks due to customs issues. This directly threatens the commissioning phase. Engineering is looking into alternative local suppliers, but nothing is confirmed yet.
