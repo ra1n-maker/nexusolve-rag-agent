@@ -1,4 +1,5 @@
 import os
+import logging
 from fastapi import FastAPI
 from pydantic import BaseModel
 from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
@@ -6,24 +7,37 @@ from langchain_qdrant import QdrantVectorStore
 from langchain_core.tools import create_retriever_tool
 from langchain_groq import ChatGroq
 from langgraph.prebuilt import create_react_agent
+from langchain_qdrant import FastEmbedSparse
 
-# TODO: Paste your Groq API key here again!
+# Configure Production-Grade Logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger("nexusolve_api")
+
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY", "")
 
 # 1. Initialize FastAPI
 app = FastAPI(title="Nexusolve RAG API", version="1.0")
+logger.info("FastAPI application initialized.")
 
 # 2. Define the expected request body
 class QueryRequest(BaseModel):
     question: str
 
 # 3. Setup the Agent (Run once when server starts)
-print("Initializing Agent Engine...")
-embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+logger.info("Initializing Agent Engine with Hybrid Search...")
+
+dense_embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
+sparse_embeddings = FastEmbedSparse(model_name="Qdrant/bm25")
+
 qdrant = QdrantVectorStore.from_existing_collection(
-    embedding=embeddings,
+    embedding=dense_embeddings,
+    sparse_embedding=sparse_embeddings,
     collection_name="nexusolve_projects",
     path="./qdrant_db",
+    retrieval_mode="hybrid" # Tells the retriever to combine both search methods
 )
 
 retriever = qdrant.as_retriever(search_kwargs={"k": 4})
